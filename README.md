@@ -4,15 +4,16 @@ Paragfraf de intro
 
 ## Descriere problema
 
-##Prezentare API-uri
+## Prezentare API-uri
 
-##desciere arhitectura
+## desciere arhitectura
 
-*ex de request, resp
+### Ex de request, resp
 
-...json
+```json
 
 {
-    "exemplu":"json"
+    "exemplu": "json"
 }
-....
+
+```

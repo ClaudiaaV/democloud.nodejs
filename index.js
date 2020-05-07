@@ -1,3 +1,4 @@
+  
 const express = require("express")
 const Sequelize = require('sequelize')
 
@@ -26,7 +27,7 @@ app.use('/', express.static('frontend'))
 
 //definesc un endpoint de tip GET /hello
 app.get('/hello', (request, response) => {
-    response.status(200).json({hello: "world"})
+    response.status(200).json({hello: process.env})
 })
 
 app.get('test', (req,res) => {
@@ -109,4 +110,4 @@ app.delete('/messages/:id', (request, response) => {
     })
 })
 
-app.listen(8080)
+app.listen(process.env.PORT||8080)
