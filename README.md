@@ -128,23 +128,22 @@ Singurul argument mandatory al `fetch()` este **URL-ul** sursei pe care dorim sa
 
   - ###### Get Cocktail by name
 
-```json
-   function getIngredient() {
-    let input1 = document.getElementById('input1');
-    let nameCocktail = input1.value;
-    const proxy = 'https://cors-anywhere.herokuapp.com/';
-    const api = `${proxy}https://www.thecocktaildb.com/api/json/v1/1/search.php?s=${nameCocktail}`;
+```
+  function getCocktail() {
+                let input1 = document.getElementById('input1');
+                let nameCocktail = input1.value;
+                const proxy = 'https://cors-anywhere.herokuapp.com/';
+                const api = `${proxy}https://www.thecocktaildb.com/api/json/v1/1/search.php?s=${nameCocktail}`;
+                fetch(api)
+                    .then(response => {
+                        return response.json();
+                    })
+                    .then(data => {
+                    console.log(data);
+                    let applicationData = data;
+                      
+                }      
                 
-
-    fetch(api)
-        .then(response => {
-            return response.json();
-         })
-         .then(data => {
-         console.log(data);
-         let applicationData=Data;
-         })
-    }                
 ```
 
 Folosind acest request, pe baza unui input introdus de la tastatura, putem vedea outputul urmator in consola:
@@ -156,7 +155,7 @@ Folosind acest request, pe baza unui input introdus de la tastatura, putem vedea
 
 - ###### Get Random Recipe
 
-```json
+```
     function getIngredient() {
     const proxy = 'https://cors-anywhere.herokuapp.com/';
      const api = `${proxy}https://www.themealdb.com/api/json/v1/1/random.php`;
