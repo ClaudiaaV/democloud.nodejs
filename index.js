@@ -1,17 +1,8 @@
   
 const express = require("express")
-const Sequelize = require('sequelize')
 
-const sequelize = new Sequelize('profile', 'username', 'password', {
-    dialect: "mysql",
-    host: "localhost"
-})
 
-sequelize.authenticate().then(() => {
-    console.log("Connected to database")
-}).catch(() => {
-    console.log("Unable to connect to database")
-})
+
 
 const app = express()
 
