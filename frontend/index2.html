@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style>
+::placeholder {
+  color: white;
+  opacity: 1;
+   text-align:center;
+}
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  background-color: #f7e6ff;
+}
+.p p { 
+  display: block;
+  height: 20px;
+  width: 50%;
+  text-align:center;
+}
+label {
+    width:300px;
+    clear:left;
+    text-align:right;
+    padding-right:20px;
+    font-size: 21px;
+}
+
+::placeholder {
+  color: white;
+  opacity: 1; 
+  text-align:center;
+}
+h1 {
+  letter-spacing: 10px;
+    font-weight: 900;
+}
+input {
+  height: 30px;
+  flex: 0 20 150px;
+  margin-left: 20px;
+  background-color: #4d004d;
+  color: white;
+  border: none;
+  outline: none;
+  padding: 12px;
+}
+button{
+  background-color: #ebc6eb;
+  
+}
+button {
+	width: 200px;
+}
+.centered img {
+  width: 200px;
+  border-radius: 50%;
+ }
+
+.topnav {
+  overflow: hidden;
+  background-color: #333;
+}
+
+.topnav a {
+  float: left;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 10px 10px;
+  text-decoration: none;
+  font-size: 10px;
+}
+
+.topnav a:hover {
+  background-color: #ddd;
+  color: black;
+}
+
+.topnav a.active {
+  background-color: #660066;
+  color: white;
+}
+
+
+</style>
+
+
+        <title>COCKTAIL WIZARD</title>
+        
+    </head>
+    <body>
+      <body style="background-color:#e6ccff;">
+        <div class="topnav">
+          <a href='index.html'>HOME</a>
+        <a  class="active" href='index2.html'>COCKTAILS</a>
+        <a  href='index3.html'>RECIPES</a>
+        </div>
+        <br>
+        <h1 align="center">THE COCKTAIL WIZARD</h1>
+        <h3 align="center">Your Cocktail search engine</h3>
+
+        
+        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+       <div align="center"> <br>
+        <label>What would you like to drink?   </label><input id="input1" value="" autocomplete="off" placeholder="Search for a Cocktail..."><br>
+       <p>Or even better...</p>
+      <label>What ingredient do you have?   </label><input id="input2" value="" autocomplete="off" placeholder="Search for an ingredient...">
+        <br><br>
+      <button onclick="getCocktail()" class="btn btn-dark" align="center">Search your drink</button>
+        <button onclick="getIngredient()" class="btn btn-dark" align="center">Search by Ingredient</button><br><br>
+        <button onclick="getRandomCocktail()" class="btn btn-dark" align="center">Try a random Cocktail!</button>
+        
+         <button onclick="window.location.href='/index.html'" class="btn btn-dark">Take me back home</button>
+        </div></div><br>
+       <div class="centered">
+        <div class="d-flex justify-content-center">
+        <img class="imagine" src=""></img>
+        </div></div>
+        
+  <div class="p" align="center">
+    <p id="demo"></p>
+    <p id="demo2"></p>
+    <p id="demo3"></p>
+    <p id="demo4"></p>
+  </div> 
+  <br><br>
+   
+
+        <script>
+                function getCocktail() {
+                let input1 = document.getElementById('input1');
+                let nameCocktail = input1.value;
+                const proxy = 'https://cors-anywhere.herokuapp.com/';
+                const api = `${proxy}https://www.thecocktaildb.com/api/json/v1/1/search.php?s=${nameCocktail}`;
+                
+
+                fetch(api)
+                    .then(response => {
+                        return response.json();
+                    })
+                    .then(data => {
+                    console.log(data);
+                    document.getElementById("demo").innerHTML ="Cocktail:  " + data.drinks[0].strDrink;
+                    document.getElementById("demo2").innerHTML ="Category:  " + data.drinks[0].strCategory
+                    document.getElementById("demo3").innerHTML ="Base ingredient:  " + data.drinks[0].strIngredient1
+                    document.getElementById("demo4").innerHTML ="Instructions:  " + data.drinks[0].strInstructions
+                    document.querySelector('.imagine').setAttribute('src', data.drinks[0].strDrinkThumb);
+                })
+                      
+                }      
+                
+                 function getRandomCocktail() {
+              
+                const proxy = 'https://cors-anywhere.herokuapp.com/';
+                const api = `${proxy}https://www.thecocktaildb.com/api/json/v1/1/random.php`;
+                
+
+                fetch(api)
+                    .then(response => {
+                        return response.json();
+                    })
+                    .then(data => {
+                    console.log(data);
+                    document.getElementById("demo").innerHTML ="Cocktail:  " + data.drinks[0].strDrink;
+                    document.getElementById("demo2").innerHTML ="Category:  " + data.drinks[0].strCategory
+                    document.getElementById("demo3").innerHTML ="Base ingredient:  " + data.drinks[0].strIngredient1
+                    document.getElementById("demo4").innerHTML ="Instructions:  " + data.drinks[0].strInstructions
+                    document.querySelector('.imagine').setAttribute('src', data.drinks[0].strDrinkThumb);
+                })
+                      
+                }   
+                
+            function getIngredient() {
+                let input2 = document.getElementById('input2');
+                let ingredient = input2.value;
+                const proxy = 'https://cors-anywhere.herokuapp.com/';
+                const api = `${proxy}https://www.thecocktaildb.com/api/json/v1/1/filter.php?i=${ingredient}`;
+                
+
+                fetch(api)
+                    .then(response => {
+                        return response.json();
+                    })
+                    .then(data => {
+                    console.log(data);
+                    document.getElementById("demo").innerHTML ="Cocktail:  " + data.drinks[0].strDrink;
+            
+                    document.querySelector('.imagine').setAttribute('src', data.drinks[0].strDrinkThumb);
+                })
+                      
+                }
+   
+        </script>
+        </div> 
+    </body>
+</html>

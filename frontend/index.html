@@ -1,153 +1,178 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>Message list</title>
-    </head>
-    <body>
-        <h1>Messages</h1>
 
-        <!-- initial table structure
-        <table style="width:500px;">
-                <tr>
-                    <th>ID</th>
-                    <th>Subject</th>
-                    <th>Name</th> 
-                    <th>Message</th>
-                    <th>Actions</th>
-                </tr>
-                <tr>
-                    <td>1</td>
-                    <td>Subject data</td>
-                    <td>Name data</td>
-                    <td>Message data</td>
-                    <td>
-                        <button>Edit</button>
-                        <button>Delete</button>
-                    </td>
-                </tr>
-        </table>
-        -->
+<style>
+:root {
+  --container-bg-color: #333;
+  --left-bg-color: rgba(255, 0, 0, 0.4);;
+  --left-button-hover-color: rgba(161, 11, 11, 0.3);
+  --right-bg-color: rgba(43, 43, 43, 0.8);
+  --right-button-hover-color: rgba(92, 92, 92, 0.3);
+  --hover-width: 75%;
+  --other-width: 25%;
+  --speed: 1000ms;
+}
 
-        <form onSubmit="saveMessage(event)">
-                <input type="hidden" name="id" id="id" /><br />
-                Name:<br />
-                <input type="text" name="name" id="name" /><br />
-                Subject:<br />
-                <input type="text" name="subject" id="subject"><br/>
-                Message:<br />
-                <textarea name="message" id="message"></textarea> <br/>
-                <input type="submit" value="Save message">
-                <input type="reset" value="Cancel">
-        </form>
-    
+html, body {
+  padding:0;
+  margin:0;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden;
+}
 
-        <div id="table"></div>
+h1 {
+  font-size: 4rem;
+  color: #fff;
+  position: absolute;
+  left: 50%;
+  top: 20%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+}
 
-        
-        <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+.button {
+  display: block;
+  position: absolute;
+  left: 50%;
+  top: 40%;
+  height: 2.5rem;
+  padding-top: 1.3rem;
+  width: 15rem;
+  text-align: center;
+  color: #fff;
+  border: #fff solid 0.2rem;
+  font-size: 1rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  text-decoration: none;
+  transform: translateX(-50%);
+}
 
-        <script 
-            src="https://code.jquery.com/jquery-3.3.1.min.js"
-            integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
-            crossorigin="anonymous"></script>
-        
-        <script type="text/javascript">
-            function showMessages() {
-                axios.get('/messages').then(function(results) {
-                    
-                    let html = ` <table style="width:500px;">
-                            <tr>
-                                <th>ID</th>
-                                <th>Subject</th>
-                                <th>Name</th> 
-                                <th>Message</th>
-                                <th>Actions</th>
-                            </tr>`
-                    
-                    results.data.forEach(function(element) {
-                        html += `<tr>
-                                    <td>${element.id}</td>
-                                    <td>${element.name}</td>
-                                    <td>${element.subject}</td>
-                                    <td>${element.message}</td>
-                                    <td>
-                                        <button onClick="editMessage(${element.id})">Edit</button>
-                                        <button onClick="deleteMessage(${element.id})">Delete</button>
-                                    </td>
-                                </tr>`
-                    })
+.split.left .button:hover {
+  background-color: var(--left-button-hover-color);
+  border-color: var(--left-button-hover-color);
+}
 
-                    html += `</table>`
-                    
-                    $('#table').html(html)
-                }).catch(function(error) {
-                    console.log(error)
-                })
-            }
+.split.right .button:hover {
+  background-color: var(--right-button-hover-color);
+  border-color: var(--right-button-hover-color);
+}
 
-            function saveMessage(event) {
-                event.preventDefault()
-                
-                
-                
-                //get values from fields
-                let id = $('#id').val()
-                let name = $('#name').val()
-                let subject = $('#subject').val()
-                let message = $('#message').val()
-                
-                if(id) {
-                    axios.put('/messages/'+id, {
-                        name: name,
-                        subject: subject,
-                        message: message
-                    }).then(function(result) {
-                        showMessages()
-                        $(event.target).trigger("reset")
-                    }).catch(function(err) {
-                        alert('Resource could not be saved')
-                    })
-                } else {
-                    //make a request to POST /messages
-                    axios.post('/messages', {
-                        name: name,
-                        subject: subject,
-                        message: message
-                    }).then(function(result) {
-                        showMessages()
-                        $(event.target).trigger("reset")
-                    }).catch(function(err) {
-                        alert('Resource could not be saved')
-                    })
-                }
-            }
+.container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: var(--container-bg-color);
+}
 
-            function editMessage(id) {
-                //get the values from the server
-                axios.get('/messages/'+id).then(function(result) {
-                    //display values in the form
-                    $('#id').val(result.data.id)
-                    $('#name').val(result.data.name)
-                    $('#subject').val(result.data.subject)
-                    $('#message').val(result.data.message) 
-                }).catch(function(err) {
-                    console.log(err)
-                    alert('Could not find resource')
-                })
-            }
+.split {
+  position: absolute;
+  width: 50%;
+  height: 100%;
+  overflow: hidden;
+}
 
-            function deleteMessage(id) {
-                axios.delete('/messages/'+id).then(function(result) {
-                    showMessages()
-                }).catch(function(err) {
-                    alert('Resource could not delete resource')
-                }) 
-            }
+.split.left {
+  left:0;
+  background: url('https://static.standard.co.uk/s3fs-public/thumbnails/image/2016/09/30/10/cocktails.jpg?width=1000&height=614&fit=bounds&format=pjpg&auto=webp&quality=70&crop=16:9,offset-y0.5') center center no-repeat;
+  background-size: cover;
+}
 
-            $(document).ready(function() {
-                console.log('Hello from JQuery')
-                showMessages()
-            })
-        </script>    
-    </body>
-</html>
+.split.left:before {
+  position:absolute;
+  content: "";
+  width: 100%;
+  height: 100%;
+  background: var(--left-bg-color);
+}
+
+.split.right {
+  right:0;
+  background: url('https://www.graffitifoods.ro/wp-content/themes/graffiti/assets/images/graffiti-urban.jpg') center center no-repeat;
+  background-size: cover;
+}
+
+.split.right:before {
+  position:absolute;
+  content: "";
+  width: 100%;
+  height: 100%;
+  background: var(--right-bg-color);
+}
+
+.split.left, .split.right, .split.right:before, .split.left:before {
+  transition: var(--speed) all ease-in-out;
+}
+
+.hover-left .left {
+  width: var(--hover-width);
+}
+
+.hover-left .right {
+  width: var(--other-width);
+}
+
+.hover-left .right:before {
+  z-index: 2;
+}
+
+
+.hover-right .right {
+  width: var(--hover-width);
+}
+
+.hover-right .left {
+  width: var(--other-width);
+}
+
+.hover-right .left:before {
+  z-index: 2;
+}
+
+@media(max-width: 800px) {
+  h1 {
+    font-size: 2rem;
+  }
+
+  .button {
+    width: 12rem;
+  }
+}
+
+@media(max-height: 700px) {
+  .button {
+    top: 70%;
+  }
+}
+</style>
+<body></body>
+<div class="container">
+  <div class="split left">
+    <h1>Cocktails</h1>
+    <a href="index2.html" class="button">Search a Cocktail</a>
+  </div>
+  <div class="split right">
+    <h1>Recipes</h1>
+    <a href="index3.html" class="button">Search a Recipe</a>
+  </div>
+</div>
+<div><script>const left = document.querySelector(".left");
+const right = document.querySelector(".right");
+const container = document.querySelector(".container");
+
+left.addEventListener("mouseenter", () => {
+  container.classList.add("hover-left");
+});
+
+left.addEventListener("mouseleave", () => {
+  container.classList.remove("hover-left");
+});
+
+right.addEventListener("mouseenter", () => {
+});
+
+right.addEventListener("mouseleave", () => {
+  container.classList.remove("hover-right");
+});
+</script></div>
+</body>
